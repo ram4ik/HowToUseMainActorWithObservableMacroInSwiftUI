@@ -7,12 +7,21 @@
 
 import SwiftUI
 
+actor TitleDatabase {
+    
+    func getNewTitle() -> String {
+        "Some new title!"
+    }
+}
+
+@MainActor
 class ObservableViewModel: ObservableObject {
     
+    let database = TitleDatabase()
     @Published var title: String = "Starting title"
     
-    func updateTitle() {
-        title = "Some new title"
+    func updateTitle() async {
+        title = await database.getNewTitle()
     }
 }
 
@@ -23,7 +32,7 @@ struct ContentView: View {
     var body: some View {
         Text(viewModel.title)
             .task {
-                viewModel.updateTitle()
+                await viewModel.updateTitle()
             }
     }
 }
