@@ -7,15 +7,24 @@
 
 import SwiftUI
 
+class ObservableViewModel: ObservableObject {
+    
+    @Published var title: String = "Starting title"
+    
+    func updateTitle() {
+        title = "Some new title"
+    }
+}
+
 struct ContentView: View {
+    
+    @StateObject private var viewModel = ObservableViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        Text(viewModel.title)
+            .task {
+                viewModel.updateTitle()
+            }
     }
 }
 
