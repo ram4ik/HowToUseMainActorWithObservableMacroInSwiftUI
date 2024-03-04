@@ -14,11 +14,10 @@ actor TitleDatabase {
     }
 }
 
-@MainActor
-class ObservableViewModel: ObservableObject {
+@Observable class ObservableViewModel {
     
-    let database = TitleDatabase()
-    @Published var title: String = "Starting title"
+    @ObservationIgnored let database = TitleDatabase()
+    var title: String = "Starting title"
     
     func updateTitle() async {
         title = await database.getNewTitle()
@@ -27,7 +26,7 @@ class ObservableViewModel: ObservableObject {
 
 struct ContentView: View {
     
-    @StateObject private var viewModel = ObservableViewModel()
+    @State private var viewModel = ObservableViewModel()
     
     var body: some View {
         Text(viewModel.title)
