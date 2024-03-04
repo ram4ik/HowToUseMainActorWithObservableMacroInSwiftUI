@@ -17,8 +17,9 @@ actor TitleDatabase {
 @Observable class ObservableViewModel {
     
     @ObservationIgnored let database = TitleDatabase()
-    var title: String = "Starting title"
+    @MainActor var title: String = "Starting title"
     
+    @MainActor
     func updateTitle() async {
         title = await database.getNewTitle()
     }
